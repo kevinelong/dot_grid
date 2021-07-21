@@ -1,0 +1,39 @@
+<body></body>
+<script>
+    class Dots {
+        constructor(target=document.body, color = 'rgba(0,0,0,0.25)', dotSize = 2, cellWidth = 20, cellHeight = 20, offset = 10) {
+            Object.assign(this, {target, color, dotSize, cellWidth, cellHeight, offset});
+            this.halfDot = this.dotSize / 2;
+            this.createCanvasContext();
+            window.addEventListener('resize', () => this.render(), false);
+            this.render();
+        }
+
+        createCanvasContext() {
+            this.canvas = document.createElement('canvas');
+            this.canvas.setAttribute('style', 'display:block;width:100%;height:100%');
+            this.context = this.canvas.getContext('2d');
+            this.target.style.margin = '0';
+            this.target.appendChild(this.canvas);
+        }
+
+        getWidth = () => Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        getHeight = () => Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+        render() {
+            const width = this.getWidth();
+            const height = this.getHeight();
+            this.canvas.width = width;
+            this.canvas.height = height;
+            this.context.fillStyle = this.color;
+
+            for (let x = this.offset; x < width; x += this.cellWidth) {
+                for (let y = this.offset; y < height; y += this.cellHeight) {
+                    this.context.fillRect(x - this.halfDot, y - this.halfDot, this.dotSize, this.dotSize);
+                }
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => new Dots())
+</script>
